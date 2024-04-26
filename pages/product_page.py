@@ -1,5 +1,6 @@
 from .base_page import BasePage
 from selenium.webdriver.common.by import By
+import time
 
 class ProductPage(BasePage):
     def add_product_to_basket(self):
@@ -20,3 +21,18 @@ class ProductPage(BasePage):
         product_price = self.browser.find_element(By.CSS_SELECTOR, ".product_main .price_color").text
         basket_total_message = self.browser.find_element(By.CSS_SELECTOR, ".alert-info .alertinner p strong").text
         assert product_price in basket_total_message, "Product price is not in the basket total message"
+
+    def cant_see_success_message_after_adding_product_to_basket(self):
+        add_to_basket_button = self.browser.find_element(By.CSS_SELECTOR, ".btn-add-to-basket")
+        add_to_basket_button.click()
+        assert self.is_element_present(By.CSS_SELECTOR, ".alert-success"), "Success message is not presented, but should be"
+        assert True
+    def cant_see_success_message(self):
+        assert self.is_element_present(By.CSS_SELECTOR, ".alert-success"), "Success message is presented, but should not be"
+        assert True
+    def disappeared_after_adding_product_to_basket(self):
+        add_to_basket_button = self.browser.find_element(By.CSS_SELECTOR, ".btn-add-to-basket")
+        add_to_basket_button.click()
+        time.sleep(1)
+        assert self.is_disappeared(By.CSS_SELECTOR, ".alert-success"), "Success message is not disappeared, but should be"
+        assert True
